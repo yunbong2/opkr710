@@ -145,6 +145,7 @@ class CarInterface(CarInterfaceBase):
     #ret.lateralTuning.indi.timeConstant = TimeConstant
     #ret.lateralTuning.indi.actuatorEffectiveness = ActuatorEffectiveness
 
+    ret.lateralTuning.init('lqr')
     ret.lateralTuning.lqr.scale = Scale
     ret.lateralTuning.lqr.ki = LqrKi
     ret.lateralTuning.lqr.a = [0., 1., -0.22619643, 1.21822268]
