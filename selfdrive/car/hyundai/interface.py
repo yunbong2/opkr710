@@ -134,16 +134,16 @@ class CarInterface(CarInterfaceBase):
       ret.mass = 1640. + STD_CARGO_KG
       ret.wheelbase = 2.845
 
-    ret.lateralTuning.pid.kf = PidKf
-    ret.lateralTuning.pid.kpBP = [0., 9.]
-    ret.lateralTuning.pid.kpV = [0.1, PidKp]
-    ret.lateralTuning.pid.kiBP = [0., 9.]
-    ret.lateralTuning.pid.kiV = [0.01, PidKi]
+    #ret.lateralTuning.pid.kf = PidKf
+    #ret.lateralTuning.pid.kpBP = [0., 9.]
+    #ret.lateralTuning.pid.kpV = [0.1, PidKp]
+    #ret.lateralTuning.pid.kiBP = [0., 9.]
+    #ret.lateralTuning.pid.kiV = [0.01, PidKi]
 
-    ret.lateralTuning.indi.innerLoopGain = InnerLoopGain
-    ret.lateralTuning.indi.outerLoopGain = OuterLoopGain
-    ret.lateralTuning.indi.timeConstant = TimeConstant
-    ret.lateralTuning.indi.actuatorEffectiveness = ActuatorEffectiveness
+    #ret.lateralTuning.indi.innerLoopGain = InnerLoopGain
+    #ret.lateralTuning.indi.outerLoopGain = OuterLoopGain
+    #ret.lateralTuning.indi.timeConstant = TimeConstant
+    #ret.lateralTuning.indi.actuatorEffectiveness = ActuatorEffectiveness
 
     ret.lateralTuning.lqr.scale = Scale
     ret.lateralTuning.lqr.ki = LqrKi
