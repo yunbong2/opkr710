@@ -129,14 +129,14 @@ class PathPlanner():
     if abs(output_scale) >= 1 and v_ego > 8:
       self.mpc_frame += 1
       if self.mpc_frame % 5 == 0:
-        self.new_steerRatio += (round(v_ego, 1) * 0.01)
+        self.new_steerRatio += (round(v_ego, 1) * 0.03)
         if self.new_steerRatio >= 18.0:
           self.new_steerRatio = 18.0
         self.mpc_frame = 0
     else:
       self.mpc_frame += 1
       if self.mpc_frame % 5 == 0:
-        self.new_steerRatio -= 0.2
+        self.new_steerRatio -= 0.8
         if self.new_steerRatio <= CP.steerRatio:
           self.new_steerRatio = CP.steerRatio
         self.mpc_frame = 0

@@ -177,7 +177,7 @@ class CarController():
     else:
       self.steerMax_timer += 1
       if self.steerMax_timer > 5:
-        self.steerMax -= 10
+        self.steerMax -= 8
         self.steerMax_timer = 0
         if self.steerMax < 255:
           self.steerMax = 255
