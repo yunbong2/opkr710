@@ -91,9 +91,9 @@ class Spdctrl(SpdController):
             elif lead_objspd >= 0 and CS.clu_Vanz >= (int(CS.VSetDis) - 7) and int(CS.clu_Vanz * 0.5) < dRel < 149:
                 self.seq_step_debug = "SS>VS,+3"
                 lead_wait_cmd, lead_set_speed = self.get_tm_speed( CS, 60, 3)
-            elif CS.clu_Vanz > 50 and lead_objspd < 0 and int(CS.clu_Vanz * 0.4) >= dRel > 1: # 50km/h이상에서 느린차에 접근할 때 현재속도*0.4 지점에서 감속
+            elif CS.clu_Vanz > 50 and lead_objspd < 0 and int(CS.clu_Vanz * 0.5) >= dRel > 1: # 50km/h이상에서 느린차에 접근할 때 현재속도*0.4 지점에서 감속
                 self.seq_step_debug = "SS>VS,-1"
-                lead_wait_cmd, lead_set_speed = self.get_tm_speed( CS, 100, -1)
+                lead_wait_cmd, lead_set_speed = self.get_tm_speed( CS, 80, -1)
             elif CS.clu_Vanz < 30 and lead_objspd < 0 and CS.VSetDis > 30:
                 self.seq_step_debug = "SS>VS,30이하"
                 lead_wait_cmd, lead_set_speed = self.get_tm_speed( CS, 20, -3)
@@ -105,9 +105,9 @@ class Spdctrl(SpdController):
         elif lead_objspd >= 0 and CS.clu_Vanz >= (int(CS.VSetDis) - 7) and int(CS.clu_Vanz * 0.5) < dRel < 149:
             self.seq_step_debug = "일반가속,+3"
             lead_wait_cmd, lead_set_speed = self.get_tm_speed( CS, 60, 3)
-        elif lead_objspd < 0 and int(CS.clu_Vanz * 0.4) >= dRel > 1:
+        elif lead_objspd < 0 and int(CS.clu_Vanz * 0.5) >= dRel > 1:
             self.seq_step_debug = "일반감속,-1"
-            lead_wait_cmd, lead_set_speed = self.get_tm_speed( CS, 100, -1)
+            lead_wait_cmd, lead_set_speed = self.get_tm_speed( CS, 80, -1)
         else:
             self.seq_step_debug = "거리유지"
 
