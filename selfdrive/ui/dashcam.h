@@ -269,8 +269,8 @@ static void screen_draw_button(UIState *s, int touch_x, int touch_y) {
     int btn_h = 150;
     int btn_x = 1920 - btn_w;
     int btn_y = 1080 - btn_h;
-    int btn_xc = btn_x + (btn_w/2)
-    int btn_yc = btn_y + (btn_h/2)
+    int btn_xc = btn_x + (btn_w/2);
+    int btn_yc = btn_y + (btn_h/2);
     nvgBeginPath(s->vg);
       nvgRoundedRect(s->vg, btn_x, btn_y, btn_w, btn_h, 100);
       nvgStrokeColor(s->vg, nvgRGBA(255,255,255,80));
