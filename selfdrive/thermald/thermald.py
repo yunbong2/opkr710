@@ -311,6 +311,7 @@ def thermald_thread():
         startup_conditions["ignition"] = health.health.ignitionLine or health.health.ignitionCan
         sound_trigger == 1
         lateral_control_method_cnt = 0
+        lateral_control_method_trigger = 0
 
       # Setup fan handler on first connect to panda
       if handle_fan is None and health.health.hwType != log.HealthData.HwType.unknown:
