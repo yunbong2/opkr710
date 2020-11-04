@@ -105,15 +105,19 @@ class Controls:
     self.VM = VehicleModel(self.CP)
 
     self.lateral_control_method = 0
-    if self.CP.lateralTuning.which() == 'pid':
+    self.lateral_control_method_type = ""
+    if int(params.get('LateralControlMethod')) == 0:
       self.LaC = LatControlPID(self.CP)
       self.lateral_control_method = 0
-    elif self.CP.lateralTuning.which() == 'indi':
+      self.lateral_control_method_type = "PID"
+    elif int(params.get('LateralControlMethod')) == 1:
       self.LaC = LatControlINDI(self.CP)
       self.lateral_control_method = 1
-    elif self.CP.lateralTuning.which() == 'lqr':
+      self.lateral_control_method_type = "INDI"
+    elif int(params.get('LateralControlMethod')) == 2:
       self.LaC = LatControlLQR(self.CP)
       self.lateral_control_method = 2
+      self.lateral_control_method_type = "LQR"
 
     self.controlsAllowed = False
 
@@ -428,7 +432,7 @@ class Controls:
 
     self.log_alertTextMsg1 = trace1.global_alertTextMsg1
     self.log_alertTextMsg2 = trace1.global_alertTextMsg2
-    self.log_alertTextMsg1 += '  제어={}  컨트롤={}'.format( self.CP.lateralTuning.which(), self.controlsAllowed)
+    self.log_alertTextMsg1 += '  제어={}  컨트롤={}'.format(self.lateral_control_method_type, self.controlsAllowed)
 
     CC = car.CarControl.new_message()
     CC.enabled = self.enabled
@@ -540,11 +544,11 @@ class Controls:
     controlsState.alertTextMsg2 = self.log_alertTextMsg2
     controlsState.lateralControlMethod = self.lateral_control_method
 
-    if self.CP.lateralTuning.which() == 'pid':
+    if int(Params().get('LateralControlMethod')) == 0:
       controlsState.lateralControlState.pidState = lac_log
-    elif self.CP.lateralTuning.which() == 'lqr':
+    elif int(Params().get('LateralControlMethod')) == 2:
       controlsState.lateralControlState.lqrState = lac_log
-    elif self.CP.lateralTuning.which() == 'indi':
+    elif int(Params().get('LateralControlMethod')) == 1:
       controlsState.lateralControlState.indiState = lac_log
     self.pm.send('controlsState', dat)
 
