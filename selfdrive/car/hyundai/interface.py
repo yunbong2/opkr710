@@ -134,30 +134,27 @@ class CarInterface(CarInterfaceBase):
       ret.mass = 1640. + STD_CARGO_KG
       ret.wheelbase = 2.845
 
-    if int(params.get('LateralControlMethod')) == 0:
-      ret.lateralTuning.pid.kf = PidKf
-      ret.lateralTuning.pid.kpBP = [0., 9.]
-      ret.lateralTuning.pid.kpV = [0.1, PidKp]
-      ret.lateralTuning.pid.kiBP = [0., 9.]
-      ret.lateralTuning.pid.kiV = [0.01, PidKi]
-    elif int(params.get('LateralControlMethod')) == 1:
-      ret.lateralTuning.init('indi')
-      ret.lateralTuning.indi.innerLoopGain = InnerLoopGain
-      ret.lateralTuning.indi.outerLoopGain = OuterLoopGain
-      ret.lateralTuning.indi.timeConstant = TimeConstant
-      ret.lateralTuning.indi.actuatorEffectiveness = ActuatorEffectiveness
-    elif int(params.get('LateralControlMethod')) == 2:
-      ret.lateralTuning.init('lqr')
-      ret.lateralTuning.lqr.scale = Scale
-      ret.lateralTuning.lqr.ki = LqrKi
-      ret.lateralTuning.lqr.a = [0., 1., -0.22619643, 1.21822268]
-      ret.lateralTuning.lqr.b = [-1.92006585e-04, 3.95603032e-05]
-      ret.lateralTuning.lqr.c = [1., 0.]
-      ret.lateralTuning.lqr.k = [-110., 451.]
-      ret.lateralTuning.lqr.l = [0.33, 0.318]
-      ret.lateralTuning.lqr.dcGain = DcGain
-      ret.steerMaxV = [LqrSteerMaxV]
-      ret.steerMaxBP = [0.]
+    ret.lateralTuning.pid.kf = PidKf
+    ret.lateralTuning.pid.kpBP = [0., 9.]
+    ret.lateralTuning.pid.kpV = [0.1, PidKp]
+    ret.lateralTuning.pid.kiBP = [0., 9.]
+    ret.lateralTuning.pid.kiV = [0.01, PidKi]
+
+    ret.lateralTuning.indi.innerLoopGain = InnerLoopGain
+    ret.lateralTuning.indi.outerLoopGain = OuterLoopGain
+    ret.lateralTuning.indi.timeConstant = TimeConstant
+    ret.lateralTuning.indi.actuatorEffectiveness = ActuatorEffectiveness
+
+    ret.lateralTuning.lqr.scale = Scale
+    ret.lateralTuning.lqr.ki = LqrKi
+    ret.lateralTuning.lqr.a = [0., 1., -0.22619643, 1.21822268]
+    ret.lateralTuning.lqr.b = [-1.92006585e-04, 3.95603032e-05]
+    ret.lateralTuning.lqr.c = [1., 0.]
+    ret.lateralTuning.lqr.k = [-110., 451.]
+    ret.lateralTuning.lqr.l = [0.33, 0.318]
+    ret.lateralTuning.lqr.dcGain = DcGain
+    ret.steerMaxV = [LqrSteerMaxV]
+    ret.steerMaxBP = [0.]
 
     ret.centerToFront = ret.wheelbase * 0.4
 
