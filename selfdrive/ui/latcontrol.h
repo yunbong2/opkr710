@@ -36,6 +36,11 @@ static void draw_control_buttons(UIState *s, int touch_x, int touch_y) {
     int btn_yc = btn_y + (btn_h/2);
     nvgBeginPath(s->vg);
     nvgRoundedRect(s->vg, btn_x1, btn_y, btn_w, btn_h, 100);
+    nvgStrokeColor(s->vg, nvgRGBA(255,255,255,80));
+    nvgStrokeWidth(s->vg, 6);
+    nvgStroke(s->vg);
+
+    nvgBeginPath(s->vg);
     nvgRoundedRect(s->vg, btn_x2, btn_y, btn_w, btn_h, 100);
     nvgStrokeColor(s->vg, nvgRGBA(255,255,255,80));
     nvgStrokeWidth(s->vg, 6);
@@ -46,22 +51,16 @@ static void draw_control_buttons(UIState *s, int touch_x, int touch_y) {
       nvgFill(s->vg);
       nvgFillColor(s->vg, nvgRGBA(255,255,255,200));
       nvgText(s->vg,btn_xc1,btn_yc,"INDI",NULL);
-      nvgFill(s->vg);
-      nvgFillColor(s->vg, nvgRGBA(255,255,255,200));
       nvgText(s->vg,btn_xc2,btn_yc,"LQR",NULL);
     } else if (s->lateral_control == 1) {
       nvgFill(s->vg);
       nvgFillColor(s->vg, nvgRGBA(255,255,255,200));
       nvgText(s->vg,btn_xc1,btn_yc,"PID",NULL);
-      nvgFill(s->vg);
-      nvgFillColor(s->vg, nvgRGBA(255,255,255,200));
       nvgText(s->vg,btn_xc2,btn_yc,"LQR",NULL);
     } else if (s->lateral_control == 2) {
       nvgFill(s->vg);
       nvgFillColor(s->vg, nvgRGBA(255,255,255,200));
       nvgText(s->vg,btn_xc1,btn_yc,"INDI",NULL);
-      nvgFill(s->vg);
-      nvgFillColor(s->vg, nvgRGBA(255,255,255,200));
       nvgText(s->vg,btn_xc2,btn_yc,"PID",NULL);
     }
   }
