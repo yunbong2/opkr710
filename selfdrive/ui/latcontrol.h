@@ -51,6 +51,7 @@ bool latcontrol( UIState *s, int touch_x, int touch_y ) {
 
   if (control_button_clicked(touch_x,touch_y)) {
     Params().write_db_value("LateralControlMethod", "2", 1);
+    touched = true;
   }
   
   return touched;
