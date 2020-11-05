@@ -1,15 +1,12 @@
 #include <dirent.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include "common/params.h"
 
-
-#define LAT_CONTROL_STAT 0
-
-int latControl = LAT_CONTROL_STAT;
 
 bool control_button_clicked(int touch_x, int touch_y) {
-  if (touch_x >= 1660 && touch_x <= 1810) {
-    if (touch_y >= 885 && touch_y <= 1035) {
+  if (touch_x >= 1585 && touch_x <= 1725) {
+    if (touch_y >= 905 && touch_y <= 1045) {
       return true;
     }
   }
@@ -18,13 +15,9 @@ bool control_button_clicked(int touch_x, int touch_y) {
 
 static void draw_control_button(UIState *s, int touch_x, int touch_y) {
   if (s->vision_connected){
-
-    if (latControl == LAT_CONTROL_STAT) {
-      //draw_lock_button(s);
-    }
     int btn_w = 140;
     int btn_h = 140;
-    int btn_x = 1920 - btn_w - 200;
+    int btn_x = 1920 - btn_w - 195;
     int btn_y = 1080 - btn_h - 35;
     int btn_xc = btn_x + (btn_w/2);
     int btn_yc = btn_y + (btn_h/2);
@@ -34,8 +27,9 @@ static void draw_control_button(UIState *s, int touch_x, int touch_y) {
     nvgStrokeWidth(s->vg, 6);
     nvgStroke(s->vg);
 
-    nvgFontSize(s->vg, 52);
-    if (captureState == CAPTURE_STATE_CAPTURING) {
+    nvgFontSize(s->vg, 50);
+    int latControl_read = read_param(&s->lateralControlMethod, "LateralControlMethod");
+    if (latControl_read == 2) {
       NVGcolor fillColor = nvgRGBA(255,0,0,150);
       nvgFillColor(s->vg, fillColor);
       nvgFill(s->vg);
@@ -53,7 +47,9 @@ bool latcontrol( UIState *s, int touch_x, int touch_y ) {
   
   draw_control_button(s, touch_x, touch_y);
 
-  if (control_button_clicked(touch_x,touch_y)) {}
+  if (control_button_clicked(touch_x,touch_y)) {
+    Params().write_db_value("LateralControlMethod", "2", 1);
+  }
   
   return touched;
 }
