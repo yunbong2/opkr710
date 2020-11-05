@@ -37,6 +37,7 @@ void ui_init(UIState *s) {
   read_param(&s->nDebugUi1, "DebugUi1");
   read_param(&s->nDebugUi2, "DebugUi2");
   read_param(&s->nOpkrBlindSpotDetect, "OpkrBlindSpotDetect");
+  read_param(&s->lateral_control, "LateralControlMethod");
 
   s->fb = framebuffer_init("ui", 0, true, &s->fb_w, &s->fb_h);
   assert(s->fb);
