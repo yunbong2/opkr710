@@ -37,7 +37,6 @@ static void draw_control_button(UIState *s, int touch_x, int touch_y) {
       nvgFill(s->vg);
     } else {
       nvgFillColor(s->vg, nvgRGBA(255, 255, 255, 200));
-      nvgFill(s->vg);
     }
     nvgText(s->vg,btn_xc,btn_yc,"LQR",NULL);
   }
