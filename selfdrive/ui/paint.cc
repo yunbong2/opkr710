@@ -544,7 +544,7 @@ static void ui_draw_debug(UIState *s)
   nvgFillColor(s->vg, COLOR_WHITE_ALPHA(150));
   if (s->nDebugUi2 == 1) {
     ui_print(s, ui_viz_rx, ui_viz_ry, "Live Parameters");
-    ui_print(s, ui_viz_rx, ui_viz_ry+50, "­·SR:%.2f", scene.liveParams.steerRatio);
+    ui_print(s, ui_viz_rx, ui_viz_ry+50, "·SR:%.2f", scene.liveParams.steerRatio);
     ui_print(s, ui_viz_rx, ui_viz_ry+100, "·AOfs:%.2f", scene.liveParams.angleOffset);
     ui_print(s, ui_viz_rx, ui_viz_ry+150, "·AOAVG:%.2f", scene.liveParams.angleOffsetAverage);
     ui_print(s, ui_viz_rx, ui_viz_ry+200, "·SFact:%.2f", scene.liveParams.stiffnessFactor);
