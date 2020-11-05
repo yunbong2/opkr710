@@ -186,8 +186,8 @@ class CarController():
 
     if abs(self.outScale) >= 1 and CS.out.vEgo > 8:
       self.steerMax = interp(self.angle_diff, self.angle_differ_range, self.steerMax_range)
-      self.deltaUp = interp(self.angle_diff, self.angle_differ_range, self.steerDeltaUp_range)
-      self.deltaDown = interp(self.angle_diff, self.angle_differ_range, self.steerDeltaDown_range)
+      self.steerdeltaUp = interp(self.angle_diff, self.angle_differ_range, self.steerDeltaUp_range)
+      self.steerdeltaDown = interp(self.angle_diff, self.angle_differ_range, self.steerDeltaDown_range)
 
     #if abs(self.outScale) >= 1 and CS.out.vEgo > 8:
     #  self.steerMax_timer += 1
@@ -198,27 +198,27 @@ class CarController():
     #      self.steerMax = SteerLimitParams.STEER_MAX
     else:
       self.steerMax_timer += 1
-      self.deltaUp_timer += 1
-      self.deltaDown_timer += 1
+      self.steerDeltaUp_timer += 1
+      self.steerDeltaDown_timer += 1
       if self.steerMax_timer > 5:
         self.steerMax -= 5
         self.steerMax_timer = 0
         if self.steerMax < 255:
           self.steerMax = 255
-      if self.deltaUp_timer > 50:
-        self.deltaUp -= 1
-        self.deltaUp_timer = 0
-        if self.deltaUp < 3:
-          self.deltaUp = 3
-      if self.deltaDown_timer > 50:
-        self.deltaDown -= 1
-        self.deltaDown_timer = 0
-        if self.deltaDown < 5:
-          self.deltaDown = 5
+      if self.steerDeltaUp_timer > 50:
+        self.steerDeltaUp -= 1
+        self.steerDeltaUp_timer = 0
+        if self.steerDeltaUp < 3:
+          self.steerDeltaUp = 3
+      if self.steerDeltaDown_timer > 50:
+        self.steerDeltaDown -= 1
+        self.steerDeltaDown_timer = 0
+        if self.steerDeltaDown < 5:
+          self.steerDeltaDown = 5
 
     param.STEER_MAX = min(param.STEER_MAX, int(self.steerMax))
-    param.STEER_DELTA_UP = min(param.STEER_DELTA_UP, int(self.deltaUp))
-    param.STEER_DELTA_DOWN = min(param.STEER_DELTA_DOWN, int(self.deltaDown))
+    param.STEER_DELTA_UP = min(param.STEER_DELTA_UP, int(self.steerDeltaUp))
+    param.STEER_DELTA_DOWN = min(param.STEER_DELTA_DOWN, int(self.steerDeltaDown))
 
 
     # Steering Torque
@@ -329,7 +329,7 @@ class CarController():
     if frame % 2 and CS.mdps_bus: # send clu11 to mdps if it is not on bus 0
       can_sends.append(create_clu11(self.packer, frame, CS.mdps_bus, CS.clu11, Buttons.NONE, enabled_speed))
 
-    str_log1 = '곡률={:03.0f}  토크={:03.0f}  프레임률={:03.0f} ST={:03.0f}/{:01.0f}/{:01.0f}'.format(abs(self.model_speed), abs(new_steer), self.timer1.sampleTime(), self.steerMax, self.deltaUp, self.deltaDown)
+    str_log1 = '곡률={:03.0f}  토크={:03.0f}  프레임률={:03.0f} ST={:03.0f}/{:01.0f}/{:01.0f}'.format(abs(self.model_speed), abs(new_steer), self.timer1.sampleTime(), self.steerMax, self.steerDeltaUp, self.steerDeltaDown)
     trace1.printf1('{}  {}'.format(str_log1, self.str_log2))
 
     if CS.out.cruiseState.modeSel == 0 and self.mode_change_switch == 3:
