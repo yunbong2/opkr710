@@ -1,7 +1,9 @@
 #include <dirent.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+
 #include "common/params.h"
+#include "ui.hpp"
 
 
 bool control_button_clicked(int touch_x, int touch_y) {
