@@ -265,8 +265,8 @@ static void screen_draw_button(UIState *s, int touch_x, int touch_y) {
       draw_lock_button(s);
     }
 
-    int btn_w = 150;
-    int btn_h = 150;
+    int btn_w = 100;
+    int btn_h = 100;
     int btn_x = 1920 - btn_w;
     int btn_y = 1080 - btn_h;
     int btn_xc = btn_x + (btn_w/2);
@@ -277,7 +277,7 @@ static void screen_draw_button(UIState *s, int touch_x, int touch_y) {
       nvgStrokeWidth(s->vg, 6);
       nvgStroke(s->vg);
 
-      nvgFontSize(s->vg, 60);
+      nvgFontSize(s->vg, 40);
 
       if (captureState == CAPTURE_STATE_CAPTURING) {
         NVGcolor fillColor = nvgRGBA(255,0,0,150);
