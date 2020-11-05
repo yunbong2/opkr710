@@ -37,7 +37,7 @@ static void draw_control_buttons(UIState *s, int touch_x, int touch_y) {
     nvgBeginPath(s->vg);
     nvgRoundedRect(s->vg, btn_x1, btn_y, btn_w, btn_h, 100);
     nvgRoundedRect(s->vg, btn_x2, btn_y, btn_w, btn_h, 100);
-    nvgStrokeColor(s->vg, nvgRGBA(255,255,255,80));
+    nvgStrokeColor(s->vg, nvgRGBA(255,255,255,10));
     nvgStrokeWidth(s->vg, 6);
     nvgStroke(s->vg);
 

@@ -552,12 +552,12 @@ static void ui_draw_debug(UIState *s)
     ui_print(s, ui_viz_rx, ui_viz_ry+300, "ADelay:%.2f", scene.pathPlan.steerActuatorDelay);
     ui_print(s, ui_viz_rx, ui_viz_ry+350, "OutScale:%.3f", scene.output_scale);
     ui_print(s, ui_viz_rx, ui_viz_ry+400, "Awareness:%.2f", scene.awareness_status);
+    ui_print(s, ui_viz_rx, ui_viz_ry+450, "LaC:%s", (s->lateral_control==0?"PID":s->lateral_control==1?"INDI":s->lateral_control==2?"LQR");
     nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_BASELINE);
     ui_print(s, ui_viz_rx_center, ui_viz_ry+650, "curvature");
     ui_print(s, ui_viz_rx_center, ui_viz_ry+700, "%.4f", scene.curvature);
     ui_print(s, ui_viz_rx_center, ui_viz_ry+750, " LeftPoly(%%)    LaneWidth    RightPoly(%%)");
     ui_print(s, ui_viz_rx_center, ui_viz_ry+800, "%4.1f                    %4.2f                    %4.1f", (scene.pathPlan.lPoly/(scene.pathPlan.lPoly+abs(scene.pathPlan.rPoly)))*100, scene.pathPlan.laneWidth, (abs(scene.pathPlan.rPoly)/(scene.pathPlan.lPoly+abs(scene.pathPlan.rPoly)))*100);
-    ui_print(s, ui_viz_rx, ui_viz_ry+900, "latCnt:%d", s->lateral_control);
   }
 }
 
