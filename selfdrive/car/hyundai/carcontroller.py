@@ -181,7 +181,7 @@ class CarController():
     self.outScale = path_plan.outputScale
 
     self.angle_steers_des = path_plan.angleSteers - path_plan.angleOffset
-    self.angle_steers = CS.steeringAngle
+    self.angle_steers = CS.out.steeringAngle
     self.angle_diff = abs(self.angle_steers_des) - abs(self.angle_steers)
 
     if abs(self.outScale) >= 1 and CS.out.vEgo > 8:
