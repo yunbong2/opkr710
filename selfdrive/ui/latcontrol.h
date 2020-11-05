@@ -30,7 +30,7 @@ static void draw_control_button(UIState *s, int touch_x, int touch_y) {
     nvgStroke(s->vg);
 
     nvgFontSize(s->vg, 50);
-    int latControl_read = read_param(&s->lateralControlMethod, "LateralControlMethod");
+    int latControl_read = read_param(&s->lateral_control, "LateralControlMethod");
     if (latControl_read == 2) {
       NVGcolor fillColor = nvgRGBA(255,0,0,150);
       nvgFillColor(s->vg, fillColor);

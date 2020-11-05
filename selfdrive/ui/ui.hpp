@@ -263,6 +263,8 @@ typedef struct UIState {
   bool is_metric;
   
   int is_OpenpilotViewEnabled;
+  int lateral_control;
+
 
   int nOpkrAutoScreenOff;
   int nOpkrUIBrightness;
