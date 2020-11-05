@@ -34,6 +34,7 @@ static void draw_control_button(UIState *s, int touch_x, int touch_y) {
       NVGcolor fillColor = nvgRGBA(255,0,0,150);
       nvgFillColor(s->vg, fillColor);
       nvgFill(s->vg);
+      nvgFillColor(s->vg, nvgRGBA(255,255,255,200));
     } else {
       nvgFillColor(s->vg, nvgRGBA(255, 255, 255, 200));
     }
@@ -49,6 +50,7 @@ bool latcontrol( UIState *s, int touch_x, int touch_y ) {
 
   if (control_button_clicked(touch_x,touch_y)) {
     Params().write_db_value("LateralControlMethod", "2", 1);
+    read_param(&s->lateral_control, "LateralControlMethod");
     touched = true;
   }
   
