@@ -129,8 +129,17 @@ class CarController():
     self.longcontrol = CP.openpilotLongitudinalControl
     self.scc_live = not CP.radarOffCan
 
+    self.angle_differ_range = [10, 50]
+    self.steerMax_range = [255, SteerLimitParams.STEER_MAX]
+    self.steerDeltaUp_range = [3, SteerLimitParams.STEER_DELTA_UP]
+    self.steerDeltaDown_range = [5, SteerLimitParams.STEER_DELTA_UP]
+
     self.steerMax = 255
+    self.steerDeltaUp = 3
+    self.steerDeltaDown = 5
     self.steerMax_timer = 0
+    self.steerDeltaUp_timer = 0
+    self.steerDeltaDown_timer = 0
 
     if CP.lateralTuning.which() == 'pid':
       self.str_log2 = 'TUNE={:0.2f}/{:0.3f}/{:0.5f}'.format(CP.lateralTuning.pid.kpV[1], CP.lateralTuning.pid.kiV[1], CP.lateralTuning.pid.kf)
@@ -146,6 +155,8 @@ class CarController():
       self.mdps11_stat_last = 0
       self.spas_always = False
 
+    self.p = SteerLimitParams(CP)
+
   def update(self, enabled, CS, frame, CC, actuators, pcm_cancel_cmd, visual_alert,
              left_lane, right_lane, left_lane_depart, right_lane_depart, set_speed, lead_visible, sm):
 
@@ -157,6 +168,8 @@ class CarController():
     apply_accel, self.accel_steady = accel_hysteresis(apply_accel, self.accel_steady)
     apply_accel = clip(apply_accel * ACCEL_SCALE, ACCEL_MIN, ACCEL_MAX)
 
+    param = self.p
+
     self.model_speed, self.model_sum = self.SC.calc_va(sm, CS.out.vEgo)
 
     plan = sm['plan']
@@ -167,27 +180,53 @@ class CarController():
     path_plan = sm['pathPlan']
     self.outScale = path_plan.outputScale
 
+    self.angle_steers_des = path_plan.angleSteers - path_plan.angleOffset
+    self.angle_steers = CS.steeringAngle
+    self.angle_diff = abs(self.angle_steers_des) - abs(self.angle_steers)
+
     if abs(self.outScale) >= 1 and CS.out.vEgo > 8:
-      self.steerMax_timer += 1
-      if self.steerMax_timer > 5:
-        self.steerMax += int(CS.out.vEgo//2)
-        self.steerMax_timer = 0
-        if self.steerMax > SteerLimitParams.STEER_MAX:
-          self.steerMax = SteerLimitParams.STEER_MAX
+      self.steerMax = interp(self.angle_diff, self.angle_differ_range, self.steerMax_range)
+      self.deltaUp = interp(self.angle_diff, self.angle_differ_range, self.steerDeltaUp_range)
+      self.deltaDown = interp(self.angle_diff, self.angle_differ_range, self.steerDeltaDown_range)
+
+    #if abs(self.outScale) >= 1 and CS.out.vEgo > 8:
+    #  self.steerMax_timer += 1
+    #  if self.steerMax_timer > 5:
+    #    self.steerMax += int(CS.out.vEgo//2)
+    #    self.steerMax_timer = 0
+    #    if self.steerMax > SteerLimitParams.STEER_MAX:
+    #      self.steerMax = SteerLimitParams.STEER_MAX
     else:
       self.steerMax_timer += 1
+      self.deltaUp_timer += 1
+      self.deltaDown_timer += 1
       if self.steerMax_timer > 5:
-        self.steerMax -= 8
+        self.steerMax -= 5
         self.steerMax_timer = 0
         if self.steerMax < 255:
           self.steerMax = 255
+      if self.deltaUp_timer > 50:
+        self.deltaUp -= 1
+        self.deltaUp_timer = 0
+        if self.deltaUp < 3:
+          self.deltaUp = 3
+      if self.deltaDown_timer > 50:
+        self.deltaDown -= 1
+        self.deltaDown_timer = 0
+        if self.deltaDown < 5:
+          self.deltaDown = 5
+
+    param.STEER_MAX = min(param.STEER_MAX, int(self.steerMax))
+    param.STEER_DELTA_UP = min(param.STEER_DELTA_UP, int(self.deltaUp))
+    param.STEER_DELTA_DOWN = min(param.STEER_DELTA_DOWN, int(self.deltaDown))
+
 
     # Steering Torque
     if self.driver_steering_torque_above_timer:
       new_steer = actuators.steer * self.steerMax * (self.driver_steering_torque_above_timer / 100)
     else:
       new_steer = actuators.steer * self.steerMax
-    apply_steer = apply_std_steer_torque_limits(new_steer, self.apply_steer_last, CS.out.steeringTorque, SteerLimitParams)
+    apply_steer = apply_std_steer_torque_limits(new_steer, self.apply_steer_last, CS.out.steeringTorque, param)
     self.steer_rate_limited = new_steer != apply_steer
 
     CC.applyAccel = apply_accel
@@ -290,7 +329,7 @@ class CarController():
     if frame % 2 and CS.mdps_bus: # send clu11 to mdps if it is not on bus 0
       can_sends.append(create_clu11(self.packer, frame, CS.mdps_bus, CS.clu11, Buttons.NONE, enabled_speed))
 
-    str_log1 = '곡률={:03.0f}  토크={:03.0f}  프레임률={:03.0f} ST={:03.0f}/{:01.0f}/{:01.0f}'.format(abs(self.model_speed), abs(new_steer), self.timer1.sampleTime(), self.steerMax, SteerLimitParams.STEER_DELTA_UP, SteerLimitParams.STEER_DELTA_DOWN)
+    str_log1 = '곡률={:03.0f}  토크={:03.0f}  프레임률={:03.0f} ST={:03.0f}/{:01.0f}/{:01.0f}'.format(abs(self.model_speed), abs(new_steer), self.timer1.sampleTime(), self.steerMax, self.deltaUp, self.deltaDown)
     trace1.printf1('{}  {}'.format(str_log1, self.str_log2))
 
     if CS.out.cruiseState.modeSel == 0 and self.mode_change_switch == 3:

@@ -86,6 +86,9 @@ class PathPlanner():
     self.lane_change_adjust_vel = [16, 30]
     self.lane_change_adjust_new = 0.0
 
+    self.angle_differ_range = [10, 50]
+    self.steerRatio_range = [CP.steerRatio, 18]
+
     self.new_steerRatio = CP.steerRatio
 
     self.angle_offset_select = int(Params().get('OpkrAngleOffsetSelect'))
@@ -110,6 +113,8 @@ class PathPlanner():
     v_ego = sm['carState'].vEgo
     angle_steers = sm['carState'].steeringAngle
     active = sm['controlsState'].active
+    anglesteer_current = sm['controlsState'].angleSteers
+    anglesteer_desire = sm['controlsState'].angleSteersDes
 
     #saturated_steering = sm['controlsState'].steerSaturated
     #live_steerratio = sm['liveParameters'].steerRatio
@@ -126,13 +131,17 @@ class PathPlanner():
     # Run MPC
     self.angle_steers_des_prev = self.angle_steers_des_mpc
 
+    self.angle_diff = abs(anglesteer_desire) - abs(anglesteer_current)
+
     if abs(output_scale) >= 1 and v_ego > 8:
-      self.mpc_frame += 1
-      if self.mpc_frame % 5 == 0:
-        self.new_steerRatio += (round(v_ego, 1) * 0.02)
-        if self.new_steerRatio >= 17.0:
-          self.new_steerRatio = 17.0
-        self.mpc_frame = 0
+      self.new_steerRatio = interp(self.angle_diff, self.angle_differ_range, self.steerRatio_range)
+    #if abs(output_scale) >= 1 and v_ego > 8 and ((abs(anglesteer_desire) - abs(anglesteer_current)) > 20):
+    #  self.mpc_frame += 1
+    #  if self.mpc_frame % 5 == 0:
+    #    self.new_steerRatio += (round(v_ego, 1) * 0.025)
+    #    if self.new_steerRatio >= 17.0:
+    #      self.new_steerRatio = 17.0
+    #    self.mpc_frame = 0
     else:
       self.mpc_frame += 1
       if self.mpc_frame % 5 == 0:
