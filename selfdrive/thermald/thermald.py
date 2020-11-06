@@ -277,8 +277,8 @@ def thermald_thread():
   else:
     opkrAutoShutdown = 18000
   
-  lateral_control_method = Params().get('LateralControlMethod')
-  lateral_control_method_prev = Params().get('LateralControlMethod')
+  lateral_control_method = int(params.get("LateralControlMethod"))
+  lateral_control_method_prev = int(params.get("LateralControlMethod"))
   lateral_control_method_cnt = 0
   lateral_control_method_trigger = 0
   while 1:
@@ -294,7 +294,7 @@ def thermald_thread():
       usb_power = health.health.usbPowerMode != log.HealthData.UsbPowerMode.client
 
       # If we lose connection to the panda, wait 5 seconds before going offroad
-      lateral_control_method = Params().get('LateralControlMethod')
+      lateral_control_method = int(params.get("LateralControlMethod"))
       if lateral_control_method != lateral_control_method_prev and lateral_control_method_trigger == 0:
         startup_conditions["ignition"] = False
         lateral_control_method_trigger = 1
