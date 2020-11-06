@@ -293,6 +293,7 @@ def thermald_thread():
 
       # If we lose connection to the panda, wait 5 seconds before going offroad
       lateral_control_method = int(params.get("LateralControlMethod"))
+      #운행중 제어방법(PID, INDI, LQR) 준 실시간 변경을 위한 코드
       if lateral_control_method != lateral_control_method_prev and lateral_control_method_trigger == 0:
         startup_conditions["ignition"] = False
         lateral_control_method_trigger = 1
