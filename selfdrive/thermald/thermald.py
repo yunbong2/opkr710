@@ -277,6 +277,7 @@ def thermald_thread():
   else:
     opkrAutoShutdown = 18000
   
+  lateral_control_method = Params().get('LateralControlMethod')
   lateral_control_method_prev = Params().get('LateralControlMethod')
   lateral_control_method_cnt = 0
   lateral_control_method_trigger = 0
