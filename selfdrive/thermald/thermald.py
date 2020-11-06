@@ -287,6 +287,8 @@ def thermald_thread():
     location = location.gpsLocation if location else None
     msg = read_thermal(thermal_config)
 
+    print('lat_prv={} lat_cur={}'.format(lateral_control_method_prev, lateral_control_method))
+
     if health is not None:
       usb_power = health.health.usbPowerMode != log.HealthData.UsbPowerMode.client
 

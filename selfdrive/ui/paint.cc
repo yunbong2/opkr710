@@ -552,11 +552,11 @@ static void ui_draw_debug(UIState *s)
     ui_print(s, ui_viz_rx, ui_viz_ry+300, "ADelay:%.2f", scene.pathPlan.steerActuatorDelay);
     ui_print(s, ui_viz_rx, ui_viz_ry+350, "OutScale:%.3f", scene.output_scale);
     ui_print(s, ui_viz_rx, ui_viz_ry+400, "Awareness:%.2f", scene.awareness_status);
-    if (s->lateral_control==0) {
+    if (s->lateral_control == 0) {
       ui_print(s, ui_viz_rx, ui_viz_ry+450, "LaC:PID");
-    } else if (s->lateral_control==1) {
+    } else if (s->lateral_control == 1) {
       ui_print(s, ui_viz_rx, ui_viz_ry+450, "LaC:INDI");
-    } else if (s->lateral_control==2) {
+    } else if (s->lateral_control == 2) {
       ui_print(s, ui_viz_rx, ui_viz_ry+450, "LaC:LQR");
     }
     nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_MIDDLE);
