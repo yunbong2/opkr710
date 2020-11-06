@@ -91,12 +91,15 @@ class Spdctrl(SpdController):
             elif lead_objspd > 0 and CS.clu_Vanz >= (int(CS.VSetDis) - 9) and int(CS.clu_Vanz * 0.5) < dRel < 149:
                 self.seq_step_debug = "SS>VS,+3"
                 lead_wait_cmd, lead_set_speed = self.get_tm_speed( CS, 60, 3)
-            elif CS.clu_Vanz > 30 and lead_objspd < 0 and int(CS.clu_Vanz) >= (dRel-5) > 1 and dRel < 149: # 유지거리 범위 외 감속 조건인데 적합한 조건을 찾는 중
+            elif CS.clu_Vanz > 40 and lead_objspd < 0 and (int(CS.clu_Vanz)-1) <= int(CS.VSetDis) and 1 < dRel < 149: # 유지거리 범위 외 감속 조건인데 적합한 조건을 찾는 중
                 self.seq_step_debug = "SS>VS,-1"
                 lead_wait_cmd, lead_set_speed = self.get_tm_speed( CS, max(25, 175-(abs(int(lead_objspd))*10)), -1)
             elif CS.clu_Vanz < 30 and lead_objspd < 0 and CS.VSetDis > 30:
                 self.seq_step_debug = "SS>VS,30이하"
                 lead_wait_cmd, lead_set_speed = self.get_tm_speed( CS, 15, -3)
+            elif lead_objspd == 0 and int(CS.clu_Vanz)+10 <= int(CS.VSetDis) and int(CS.clu_Vanz) > 40 and 1 < dRel < 149:
+                self.seq_step_debug = "SS>VS,vRel=0"
+                lead_wait_cmd, lead_set_speed = self.get_tm_speed( CS, 100, -1)
             elif d_delta == 0 and lead_objspd == 0:
                 self.seq_step_debug = "선행차없음"
                 lead_wait_cmd, lead_set_speed = self.get_tm_speed( CS, 60, 3)
