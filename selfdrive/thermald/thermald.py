@@ -288,8 +288,6 @@ def thermald_thread():
     location = location.gpsLocation if location else None
     msg = read_thermal(thermal_config)
 
-    print('lat_prv={} lat_cur={}'.format(lateral_control_method_prev, lateral_control_method))
-
     if health is not None:
       usb_power = health.health.usbPowerMode != log.HealthData.UsbPowerMode.client
 
@@ -300,7 +298,7 @@ def thermald_thread():
         lateral_control_method_trigger = 1
       elif lateral_control_method != lateral_control_method_prev:
         lateral_control_method_cnt += 1
-        if lateral_control_method_cnt > 5 / DT_TRML:
+        if lateral_control_method_cnt > 2 / DT_TRML:
           lateral_control_method_prev = lateral_control_method
       elif health.health.hwType == log.HealthData.HwType.unknown:
         no_panda_cnt += 1
