@@ -214,8 +214,8 @@ class CarController():
       if self.steerDeltaDown_timer > 50:
         self.steerDeltaDown -= 1
         self.steerDeltaDown_timer = 0
-        if self.steerDeltaDown < 5:
-          self.steerDeltaDown = 5
+        if self.steerDeltaDown < 7:
+          self.steerDeltaDown = 7
 
     param.STEER_MAX = min(param.STEER_MAX, int(self.steerMax))
     param.STEER_DELTA_UP = min(param.STEER_DELTA_UP, int(self.steerDeltaUp))
