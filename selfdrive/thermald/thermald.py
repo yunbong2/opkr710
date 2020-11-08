@@ -51,6 +51,7 @@ last_eon_fan_val = None
 mediaplayer = '/data/openpilot/selfdrive/assets/addon/mediaplayer/'
 prebuiltfile = '/data/openpilot/prebuilt'
 pandaflash_ongoing = '/data/openpilot/pandaflash_ongoing'
+latcontrol_changing = '/data/openpilot/latcontrol_changing'
 
 def get_thermal_config():
   # (tz, scale)
@@ -295,6 +296,7 @@ def thermald_thread():
       lateral_control_method = int(params.get("LateralControlMethod"))
       #운행중 제어방법(PID, INDI, LQR) 준 실시간 변경을 위한 코드
       if lateral_control_method != lateral_control_method_prev and lateral_control_method_trigger == 0:
+        os.system("cd /data/openpilot; touch latcontrol_changing")
         startup_conditions["ignition"] = False
         lateral_control_method_trigger = 1
       elif lateral_control_method != lateral_control_method_prev:
@@ -314,6 +316,9 @@ def thermald_thread():
         sound_trigger == 1
         lateral_control_method_cnt = 0
         lateral_control_method_trigger = 0
+        if os.path.isfile(latcontrol_changing):
+          os.system("cd /data/openpilot; rm -f latcontrol_changing")
+
 
       # Setup fan handler on first connect to panda
       if handle_fan is None and health.health.hwType != log.HealthData.HwType.unknown:
