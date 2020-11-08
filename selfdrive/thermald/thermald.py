@@ -16,6 +16,7 @@ from common.numpy_fast import clip, interp
 from common.params import Params
 from common.realtime import DT_TRML, sec_since_boot
 from selfdrive.controls.lib.alertmanager import set_offroad_alert
+from selfdrive.controls.lib.events import Events, ET
 from selfdrive.loggerd.config import get_available_percent
 from selfdrive.pandad import get_expected_signature
 from selfdrive.swaglog import cloudlog
@@ -294,7 +295,8 @@ def thermald_thread():
       # If we lose connection to the panda, wait 5 seconds before going offroad
       lateral_control_method = int(params.get("LateralControlMethod"))
       #운행중 제어방법(PID, INDI, LQR) 준 실시간 변경을 위한 코드
-      if lateral_control_method != lateral_control_method_prev and lateral_control_method_trigger == 0:
+      if lateral_control_method != lateral_control_method_prev and lateral_control_method_trigger == 0: 
+        Events().add( EventName.pcmDisable )
         startup_conditions["ignition"] = False
         lateral_control_method_trigger = 1
       elif lateral_control_method != lateral_control_method_prev:
