@@ -550,7 +550,7 @@ static void ui_draw_debug(UIState *s)
     ui_print(s, ui_viz_rx, ui_viz_ry+200, "·SFact:%.2f", scene.liveParams.stiffnessFactor);
 
     ui_print(s, ui_viz_rx, ui_viz_ry+300, "ADelay:%.2f", scene.pathPlan.steerActuatorDelay);
-    ui_print(s, ui_viz_rx, ui_viz_ry+350, "SRCost:%.1f", scene.pathPlan.steerRateCost);
+    ui_print(s, ui_viz_rx, ui_viz_ry+350, "SRCost:%.2f", scene.pathPlan.steerRateCost);
     ui_print(s, ui_viz_rx, ui_viz_ry+400, "OutScale:%.3f", scene.output_scale);
     ui_print(s, ui_viz_rx, ui_viz_ry+450, "Awareness:%.2f", scene.awareness_status);
     if (s->lateral_control == 0) {
