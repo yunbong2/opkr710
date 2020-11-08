@@ -65,7 +65,7 @@ bool latcontrol( UIState *s, int touch_x, int touch_y ) {
   
   draw_control_buttons(s, touch_x, touch_y);
 
-  if (control_button_clicked1(touch_x,touch_y)) {
+  if ((control_button_clicked1(touch_x,touch_y)) && (s->scene.uilayout_sidebarcollapsed = true)) {
     if (s->lateral_control == 0) {
       Params().write_db_value("LateralControlMethod", "1", 1);
     } else if (s->lateral_control == 1) {
@@ -75,7 +75,7 @@ bool latcontrol( UIState *s, int touch_x, int touch_y ) {
     }
     touched = true;
   }
-  if (control_button_clicked2(touch_x,touch_y)) {
+  if ((control_button_clicked2(touch_x,touch_y)) && (s->scene.uilayout_sidebarcollapsed = true)) {
     if (s->lateral_control == 0) {
       Params().write_db_value("LateralControlMethod", "2", 1);
     } else if (s->lateral_control == 1) {
