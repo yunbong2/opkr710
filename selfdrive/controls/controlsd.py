@@ -226,7 +226,7 @@ class Controls:
     if not self.sm.alive['plan'] and self.sm.alive['pathPlan']:
       # only plan not being received: radar not communicating
       self.events.add(EventName.radarCommIssue)
-    elif not self.sm.all_alive_and_valid():
+    #elif not self.sm.all_alive_and_valid():
       #self.events.add(EventName.commIssue)
     if not self.sm['pathPlan'].mpcSolutionValid and not (EventName.laneChangeManual in self.events.names):
       self.events.add(EventName.plannerError)
