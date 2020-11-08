@@ -56,6 +56,7 @@ class PathPlanner():
     self.LP = LanePlanner()
 
     self.last_cloudlog_t = 0
+    self.steer_rate_cost = CP.steerRateCost
 
     self.setup_mpc()
     self.solution_invalid_cnt = 0
@@ -89,8 +90,8 @@ class PathPlanner():
     self.steerRatio_range = [CP.steerRatio, 18]
 
     self.new_steerRatio = CP.steerRatio
+    self.new_steer_rate_cost = CP.steerRateCost
 
-    self.steer_rate_cost = CP.steerRateCost
     self.steer_rate_cost_range = [CP.steerRateCost, 0.1]
 
     self.angle_offset_select = int(Params().get('OpkrAngleOffsetSelect'))
@@ -137,7 +138,7 @@ class PathPlanner():
 
     if abs(output_scale) >= 1 and v_ego > 8:
       self.new_steerRatio = interp(self.angle_diff, self.angle_differ_range, self.steerRatio_range)
-      self.steer_rate_cost = interp(self.angle_diff, self.angle_differ_range, self.steer_rate_cost_range)
+      self.new_steer_rate_cost = interp(self.angle_diff, self.angle_differ_range, self.steer_rate_cost_range)
     #if abs(output_scale) >= 1 and v_ego > 8 and ((abs(anglesteer_desire) - abs(anglesteer_current)) > 20):
     #  self.mpc_frame += 1
     #  if self.mpc_frame % 5 == 0:
@@ -151,9 +152,9 @@ class PathPlanner():
         self.new_steerRatio -= 0.5
         if self.new_steerRatio <= CP.steerRatio:
           self.new_steerRatio = CP.steerRatio
-        self.steer_rate_cost += 0.05
-        if self.steer_rate_cost >= CP.steerRateCost:
-          self.steer_rate_cost = CP.steerRateCost
+        self.new_steer_rate_cost += 0.05
+        if self.new_steer_rate_cost >= CP.steerRateCost:
+          self.new_steer_rate_cost = CP.steerRateCost
         self.mpc_frame = 0
 
     # Update vehicle model
@@ -263,7 +264,7 @@ class PathPlanner():
     mpc_nans = any(math.isnan(x) for x in self.mpc_solution[0].delta)
     t = sec_since_boot()
     if mpc_nans:
-      self.libmpc.init(MPC_COST_LAT.PATH, MPC_COST_LAT.LANE, MPC_COST_LAT.HEADING, self.steer_rate_cost)
+      self.libmpc.init(MPC_COST_LAT.PATH, MPC_COST_LAT.LANE, MPC_COST_LAT.HEADING, self.new_steer_rate_cost)
       self.cur_state[0].delta = math.radians(angle_steers - angle_offset) / VM.sR
 
       if t > self.last_cloudlog_t + 5.0:
