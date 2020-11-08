@@ -227,7 +227,7 @@ class Controls:
       # only plan not being received: radar not communicating
       self.events.add(EventName.radarCommIssue)
     elif not self.sm.all_alive_and_valid():
-      self.events.add(EventName.commIssue)
+      #self.events.add(EventName.commIssue)
     if not self.sm['pathPlan'].mpcSolutionValid and not (EventName.laneChangeManual in self.events.names):
       self.events.add(EventName.plannerError)
     if not self.sm['liveLocationKalman'].sensorsOK and not NOSENSOR:
