@@ -132,12 +132,12 @@ class CarController():
 
     self.angle_differ_range = [0, 20]
     self.steerMax_range = [255, SteerLimitParams.STEER_MAX]
-    self.steerDeltaUp_range = [SteerLimitParams.STEER_DELTA_UP, 5]
-    self.steerDeltaDown_range = [SteerLimitParams.STEER_DELTA_DOWN, 10]
+    self.steerDeltaUp_range = [int(self.params.get('SteerDeltaUpAdj')), 5]
+    self.steerDeltaDown_range = [int(self.params.get('SteerDeltaDownAdj')), 10]
 
     self.steerMax = 255
-    self.steerDeltaUp = SteerLimitParams.STEER_DELTA_UP
-    self.steerDeltaDown = SteerLimitParams.STEER_DELTA_DOWN
+    self.steerDeltaUp = int(self.params.get('SteerDeltaUpAdj'))
+    self.steerDeltaDown = int(self.params.get('SteerDeltaDownAdj'))
     self.steerMax_timer = 0
     self.steerDeltaUp_timer = 0
     self.steerDeltaDown_timer = 0
@@ -209,17 +209,17 @@ class CarController():
       if self.steerDeltaUp_timer > 100:
         self.steerDeltaUp -= 1
         self.steerDeltaUp_timer = 0
-        if self.steerDeltaUp <= SteerLimitParams.STEER_DELTA_UP:
-          self.steerDeltaUp = SteerLimitParams.STEER_DELTA_UP
+        if self.steerDeltaUp <= int(self.params.get('SteerDeltaUpAdj')):
+          self.steerDeltaUp = int(self.params.get('SteerDeltaUpAdj'))
       if self.steerDeltaDown_timer > 100:
         self.steerDeltaDown -= 1
         self.steerDeltaDown_timer = 0
-        if self.steerDeltaDown <= SteerLimitParams.STEER_DELTA_DOWN:
-          self.steerDeltaDown = SteerLimitParams.STEER_DELTA_DOWN
+        if self.steerDeltaDown <= int(self.params.get('SteerDeltaDownAdj')):
+          self.steerDeltaDown = int(self.params.get('SteerDeltaDownAdj'))
 
     param.STEER_MAX = min(SteerLimitParams.STEER_MAX, self.steerMax)
-    param.STEER_DELTA_UP = max(SteerLimitParams.STEER_DELTA_UP, self.steerDeltaUp)
-    param.STEER_DELTA_DOWN = max(SteerLimitParams.STEER_DELTA_DOWN, self.steerDeltaDown)
+    param.STEER_DELTA_UP = max(int(self.params.get('SteerDeltaUpAdj')), self.steerDeltaUp)
+    param.STEER_DELTA_DOWN = max(int(self.params.get('SteerDeltaDownAdj')), self.steerDeltaDown)
     print('SPDeltaUP={}  SPDeltaDN={}  steerDeltaUP={}  steerDeltaDN={}'.format(SteerLimitParams.STEER_DELTA_UP, SteerLimitParams.STEER_DELTA_DOWN, self.steerDeltaUp, self.steerDeltaDown))
     print('DeltaUPtimer={}  DeltaDNtimer={}'.format(self.steerDeltaUp_timer, self.steerDeltaDown_timer))
 
