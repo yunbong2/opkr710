@@ -220,9 +220,6 @@ class CarController():
     param.STEER_MAX = min(SteerLimitParams.STEER_MAX, self.steerMax)
     param.STEER_DELTA_UP = max(int(self.params.get('SteerDeltaUpAdj')), self.steerDeltaUp)
     param.STEER_DELTA_DOWN = max(int(self.params.get('SteerDeltaDownAdj')), self.steerDeltaDown)
-    print('SPDeltaUP={}  SPDeltaDN={}  steerDeltaUP={}  steerDeltaDN={}'.format(SteerLimitParams.STEER_DELTA_UP, SteerLimitParams.STEER_DELTA_DOWN, self.steerDeltaUp, self.steerDeltaDown))
-    print('DeltaUPtimer={}  DeltaDNtimer={}'.format(self.steerDeltaUp_timer, self.steerDeltaDown_timer))
-
 
     # Steering Torque
     if self.driver_steering_torque_above_timer:
