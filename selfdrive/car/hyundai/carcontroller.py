@@ -136,8 +136,8 @@ class CarController():
     self.steerDeltaDown_range = [SteerLimitParams.STEER_DELTA_DOWN, 10]
 
     self.steerMax = 255
-    self.steerDeltaUp = int(SteerLimitParams.STEER_DELTA_UP)
-    self.steerDeltaDown = int(SteerLimitParams.STEER_DELTA_DOWN)
+    self.steerDeltaUp = SteerLimitParams.STEER_DELTA_UP
+    self.steerDeltaDown = SteerLimitParams.STEER_DELTA_DOWN
     self.steerMax_timer = 0
     self.steerDeltaUp_timer = 0
     self.steerDeltaDown_timer = 0
@@ -206,20 +206,21 @@ class CarController():
         self.steerMax_timer = 0
         if self.steerMax < 255:
           self.steerMax = 255
-      if self.steerDeltaUp_timer > 50:
+      if self.steerDeltaUp_timer > 100:
         self.steerDeltaUp -= 1
         self.steerDeltaUp_timer = 0
-        if self.steerDeltaUp < int(SteerLimitParams.STEER_DELTA_UP):
-          self.steerDeltaUp = int(SteerLimitParams.STEER_DELTA_UP)
-      if self.steerDeltaDown_timer > 50:
+        if self.steerDeltaUp <= SteerLimitParams.STEER_DELTA_UP:
+          self.steerDeltaUp = SteerLimitParams.STEER_DELTA_UP
+      if self.steerDeltaDown_timer > 100:
         self.steerDeltaDown -= 1
         self.steerDeltaDown_timer = 0
-        if self.steerDeltaDown < int(SteerLimitParams.STEER_DELTA_DOWN):
-          self.steerDeltaDown = int(SteerLimitParams.STEER_DELTA_DOWN)
+        if self.steerDeltaDown <= SteerLimitParams.STEER_DELTA_DOWN:
+          self.steerDeltaDown = SteerLimitParams.STEER_DELTA_DOWN
 
-    param.STEER_MAX = min(SteerLimitParams.STEER_MAX, int(self.steerMax))
-    param.STEER_DELTA_UP = max(SteerLimitParams.STEER_DELTA_UP, int(self.steerDeltaUp))
-    param.STEER_DELTA_DOWN = max(SteerLimitParams.STEER_DELTA_DOWN, int(self.steerDeltaDown))
+    param.STEER_MAX = min(SteerLimitParams.STEER_MAX, self.steerMax)
+    param.STEER_DELTA_UP = max(SteerLimitParams.STEER_DELTA_UP, self.steerDeltaUp)
+    param.STEER_DELTA_DOWN = max(SteerLimitParams.STEER_DELTA_DOWN, self.steerDeltaDown)
+    print('DeltaUP={}  DeltaDN={}'.format(param.STEER_DELTA_UP, param.STEER_DELTA_DOWN))
 
 
     # Steering Torque
