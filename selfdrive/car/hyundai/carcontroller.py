@@ -201,7 +201,7 @@ class CarController():
       self.steerMax_timer += 1
       self.steerDeltaUp_timer += 1
       self.steerDeltaDown_timer += 1
-      if self.steerMax_timer > 10:
+      if self.steerMax_timer > 5:
         self.steerMax -= 5
         self.steerMax_timer = 0
         if self.steerMax < 255:
