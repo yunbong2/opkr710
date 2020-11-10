@@ -122,7 +122,6 @@ keys = {
   b"OpkrMaxAngleLimit": [TxType.PERSISTENT],
   b"OpkrAutoResumeOption": [TxType.PERSISTENT],
   b"OpkrAngleOffsetSelect": [TxType.PERSISTENT],
-  b"OpkrCarModel": [TxType.PERSISTENT],
 }
 
 def ensure_bytes(v):
