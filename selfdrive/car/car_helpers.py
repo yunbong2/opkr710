@@ -1,5 +1,5 @@
 import os
-from common.params import Params
+from common.params import Params, put_nonblocking
 from common.basedir import BASEDIR
 from selfdrive.version import comma_remote, tested_branch
 from selfdrive.car.fingerprints import eliminate_incompatible_cars, all_known_cars
@@ -8,6 +8,10 @@ from selfdrive.car.fw_versions import get_fw_versions, match_fw_to_car
 from selfdrive.swaglog import cloudlog
 import cereal.messaging as messaging
 from selfdrive.car import gen_empty_fingerprint
+import pickle
+import requests
+import threading
+import selfdrive.crash as crash
 
 from cereal import car, log
 EventName = car.CarEvent.EventName
@@ -165,6 +169,9 @@ def fingerprint(logcan, sendcan, has_relay):
   if len(fw_candidates) == 1:
     car_fingerprint = list(fw_candidates)[0]
     source = car.CarParams.FingerprintSource.fw
+
+    # these are for display only
+    put_nonblocking("OpkrCarModel", car_fingerprint)
 
   if fixed_fingerprint:
     car_fingerprint = fixed_fingerprint

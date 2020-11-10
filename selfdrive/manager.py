@@ -625,6 +625,7 @@ def main():
     ("OpkrMaxAngleLimit", "90"),
     ("OpkrAutoResumeOption", "0"),
     ("OpkrAngleOffsetSelect", "0"),
+    ("OpkrCarModel", ""),
   ]
 
   # set unset params
