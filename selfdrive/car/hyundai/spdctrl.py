@@ -49,8 +49,6 @@ class Spdctrl(SpdController):
         else:
             d_delta = 0
             lead_objspd = 0
-
-        print('dRel= {}       lead_objspd= {}'.format(dRel, lead_objspd))
  
         if CS.driverAcc_time: #운전자가 가속페달 밟으면 크루즈 설정속도를 현재속도+5으로 동기화
             lead_set_speed = int(round(CS.clu_Vanz)) + 5
@@ -160,8 +158,8 @@ class Spdctrl(SpdController):
         if self.cruise_gap != CS.cruiseGapSet:
             self.cruise_gap = CS.cruiseGapSet
 
-        str3 = '주행모드={:s}  설정속도={:03.0f}/{:03.0f}  타이머={:03.0f}/{:03.0f}'.format( self.steer_mode, set_speed, CS.VSetDis, long_wait_cmd, self.long_curv_timer )
-        str4 = '  레이더=D:{:04.1f}/V:{:05.1f}  CG={:1.0f}  구분={:s}'.format(  CS.lead_distance, CS.lead_objspd, self.cruise_gap, self.seq_step_debug )
+        str3 = '주행모드={:s}  SET={:03.0f}/{:03.0f}  T={:03.0f}/{:03.0f}'.format( self.steer_mode, set_speed, CS.VSetDis, long_wait_cmd, self.long_curv_timer )
+        str4 = '  E+R/RO=D:{:03.0f}/{:03.0f}|V:{:03.0f}/{:03.0f}  CG={:1.0f}  구분={:s}'.format(  dRel, CS.lead_distance, vRel, CS.lead_objspd, self.cruise_gap, self.seq_step_debug )
 
         str5 = str3 + str4
         trace1.printf2( str5 )
