@@ -223,7 +223,7 @@ class CarController():
 
     # Steering Torque
     if self.driver_steering_torque_above_timer:
-      new_steer = actuators.steer * self.steerMax * (self.driver_steering_torque_above_timer / 100)
+      new_steer = actuators.steer * self.steerMax * (self.driver_steering_torque_above_timer / 10)
     else:
       new_steer = actuators.steer * self.steerMax
     apply_steer = apply_std_steer_torque_limits(new_steer, self.apply_steer_last, CS.out.steeringTorque, param)
@@ -243,15 +243,15 @@ class CarController():
           self.apply_steer_ang -= STEER_ANG_MAX_RATE
       else:
         self.apply_steer_ang = apply_steer_ang_req
-    spas_active = CS.spas_enabled and enabled and (self.spas_always or CS.out.vEgo < 7.0) # 25km/h
+    spas_active = CS.spas_enabled and enabled and (self.spas_always or CS.out.vEgo < 18.0) # 64.8km/h
 
     # disable if steer angle reach 90 deg, otherwise mdps fault in some models
-    if self.opkr_maxanglelimit >= 90:
+    if self.opkr_maxanglelimit >= 360:
       lkas_active = enabled and abs(CS.out.steeringAngle) < self.opkr_maxanglelimit and not spas_active
     else:
       lkas_active = enabled and not spas_active
 
-    if (( CS.out.leftBlinker and not CS.out.rightBlinker) or ( CS.out.rightBlinker and not CS.out.leftBlinker)) and CS.out.vEgo < 30 * CV.KPH_TO_MS:  #< LANE_CHANGE_SPEED_MIN:
+    if (( CS.out.leftBlinker and not CS.out.rightBlinker) or ( CS.out.rightBlinker and not CS.out.leftBlinker)) and CS.out.vEgo < 20 * CV.KPH_TO_MS:  #< LANE_CHANGE_SPEED_MIN:
       self.lanechange_manual_timer = 10
     if CS.out.leftBlinker and CS.out.rightBlinker:
       self.emergency_manual_timer = 10
