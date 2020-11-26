@@ -94,7 +94,7 @@ class PathPlanner():
     #self.steer_rate_cost_range = [CP.steerRateCost, 0.1]
 
     self.steer_actuator_delay_range = [0.3, CP.steerActuatorDelay, CP.steerActuatorDelay, 0.1]
-    self.steer_actuator_delay_vel = [3, 9, 18, 19]
+    self.steer_actuator_delay_vel = [3, 9, 16, 17]
     self.new_steer_actuator_delay = CP.steerActuatorDelay
 
     self.angle_offset_select = int(Params().get('OpkrAngleOffsetSelect'))
